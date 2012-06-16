@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>WorkingDirectory</key>
+	<string>$SIRIREPOSITORY/SiriServerCore/startup</string>
+	<key>UserGroup</key>
+	<string>wheel</string>
+	<key>Debug</key>
+	<true/>
+	<key>ProgramArguments</key>
+	<array>
+		<string>./juizServer.sh</string>
+	</array>
+	<key>UserName</key>
+	<string>root</string>
+	<key>RunAtLoad</key>
+	<true/>
+	<key>Label</key>
+	<string>net.siriserver</string>
+</dict>
+</plist>

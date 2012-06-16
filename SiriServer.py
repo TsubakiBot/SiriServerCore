@@ -7,6 +7,7 @@ from socket import gethostname
 from twisted.internet.protocol import Protocol
 import PluginManager
 import db
+import shutil
 import logging
 import sys
 
@@ -84,14 +85,15 @@ class SiriFactory(Factory):
         logging.getLogger().info("Server is shutting down")
         self.dbConnection.close()
         logging.getLogger().info("Database Connection Closed")
-        
-        
 
 
-ROOT_CA_CERT_FILE = "keys/ca.pem"
+
+
+ROOT_CA_CERT_FILE = "keys/juizcert.pem"
 ROOT_CA_KEY_FILE = "keys/cakey.pem"
 SERVER_CERT_FILE = "keys/server.crt"
 SERVER_KEY_FILE = "keys/server.key"
+JUIZ = "../TwistedServer/JuizServer/skyra1n/juizcert.pem"
 
 def create_self_signed_cert():
     
@@ -109,9 +111,9 @@ def create_self_signed_cert():
         CAcert.get_subject().C = "DE"
         CAcert.get_subject().ST = "NRW"
         CAcert.get_subject().L = "Aachen"
-        CAcert.get_subject().O = "SiriServer by Eichhoernchen"
-        CAcert.get_subject().OU = "SiriServer Certificate Authority"
-        CAcert.get_subject().CN = "SiriServer Fake CA Certificate"
+        CAcert.get_subject().O = "Noblesse Oblige SiriServer"
+        CAcert.get_subject().OU = "Juiz Certificate Authority"
+        CAcert.get_subject().CN = "Noblesse Oblige"
         CAcert.set_serial_number(1000)
         CAcert.gmtime_adj_notBefore(0)
         CAcert.gmtime_adj_notAfter(10*365*24*60*60)
@@ -147,8 +149,8 @@ def create_self_signed_cert():
         cert.get_subject().C = "DE"
         cert.get_subject().ST = "NRW"
         cert.get_subject().L = "Aachen"
-        cert.get_subject().O = "SiriServer by Eichhoernchen"
-        cert.get_subject().OU = "SiriServer Certificate Authority"
+        cert.get_subject().O = "Noblesse Oblige SiriServer"
+        cert.get_subject().OU = "Juiz Certificate Authority"
         
         hostname = gethostname()
         print "We need to set the correct address of this machine in the certificate."
@@ -187,6 +189,8 @@ def create_self_signed_cert():
             crypto.dump_privatekey(crypto.FILETYPE_PEM, k2)
             )
         fhandle.close()
+
+        shutil.copy(ROOT_CA_CERT_FILE, JUIZ)
         
         print """
         \t\t\t ------------ IMPORTANT ------------\n\n
