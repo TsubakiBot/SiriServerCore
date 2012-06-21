@@ -40,6 +40,8 @@ class Siri(LineReceiver):
 
     def connectionMade(self):
         self.logger.info("New connection from {0} on port {1}".format(self.peer.host, self.peer.port))
+        self.logger.warning("New connection from {0} on port {1}".format(self.peer.host, self.peer.port))
+        self.logger.error("New connection from {0} on port {1}".format(self.peer.host, self.peer.port))
         self.server.numberOfConnections += 1
         self.logger.info("Currently {0} clients connected".format(self.server.numberOfConnections))
 
@@ -47,12 +49,17 @@ class Siri(LineReceiver):
         if reason.type == OpenSSL.SSL.Error:
             self.logger.warning("SSL related error")
             self.logger.warning(reason.value)
+            self.logger.error("SSL related error")
+            self.logger.error(reason.value)
         elif reason.type == error.ConnectionLost:
             self.logger.warning("Connection Lost: {0}".format(reason.value))
+            self.logger.error("Connection Lost: {0}".format(reason.value))
         elif reason.type == error.ConnectionDone:
             self.logger.info("Connection Closed: {0}".format(reason.value))
+            self.logger.warning("Connection Closed: {0}".format(reason.value))
+            self.logger.error("Connection Closed: {0}".format(reason.value))
         else:
-            self.logger.error("Connection Lost: {0}".format(reason))
+            self.logger.error("Connection Terminated: {0}".format(reason))
         self.server.numberOfConnections -= 1
         self.logger.info("Currently {0} clients connected".format(self.server.numberOfConnections))
         self.server = None

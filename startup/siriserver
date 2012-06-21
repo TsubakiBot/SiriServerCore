@@ -18,9 +18,10 @@ DESC=SiriServer
 ####### EDIT THESE LINES #########
 # you may change RUN_AS parameter to your username if you select ports over 1024 #
 PORT=443
-LOG=debug
 RUN_AS=root
-APP_PATH=$(find /home -name SiriServerCore -type d)/
+APP_PATH=$(find /home -name SiriServerCore -type d)
+LOG=error
+OUTPUT=$(find /home -name JuizServer -type d)/logs/$LOG-$(date +%s)
 ####### END | NO MORE EDITING #####
 
 . /lib/lsb/init-functions
@@ -51,10 +52,9 @@ load_settings() {
             log_warning_msg "$DESC: daemon username not set, aborting. See $SETTINGS";
             return 1; }
         [ -z "${RUN_AS%:*}" ] && exit 1
-
+        
         DAEMON_OPTS="SiriServer.py"
         [ -n "$PORT" ] && DAEMON_OPTS="$DAEMON_OPTS -p $PORT"
-        [ -n "$LOG" ] && DAEMON_OPTS="$DAEMON_OPTS -l $LOG --logfile $APP_PATH/logs/$(date +%s)-$LOG"
         [ -n "$PID_FILE" ] && PID_FILE=$PID_FILE
         [ -n "$PID_FILE" ] || PID_FILE=/var/run/siriServer/siriServer.pid
         SETTINGS_LOADED=TRUE
@@ -83,7 +83,13 @@ start_siriServer () {
         log_daemon_msg "Starting $DESC"
         [ "$WEB_UPDATE" = 1 ] && enable_updates
         handle_pid
-        start-stop-daemon -o -d $APP_PATH -c $RUN_AS --start --background --pidfile $PID_FILE  --make-pidfile --exec $DAEMON -- $DAEMON_OPTS
+        if [ "$LOG" != "" ]; then
+            if [ "$OUTPUT" = "" ]; then
+                OUTPUT="$APP_PATH/logs/$LOG-$(date +%s)"
+            fi
+            DAEMON_OPTS="$DAEMON_OPTS -l $LOG --logfile $OUTPUT"
+        fi
+        start-stop-daemon -o -d $APP_PATH -c $RUN_AS --start --background --pidfile $PID_FILE --make-pidfile --exec $DAEMON -- $DAEMON_OPTS
         check_retval
     else
         log_success_msg "$DESC: already running (pid $PID)"

@@ -80,9 +80,13 @@ class SiriFactory(Factory):
         PluginManager.load_api_keys()
         PluginManager.load_plugins()
         logging.getLogger().info("Server is running and listening for connections")
+        logging.getLogger().warning("Server is running and listening for connections")
+        logging.getLogger().error("Server is running and listening for connections")
         
     def stopFactory(self):
         logging.getLogger().info("Server is shutting down")
+        logging.getLogger().warning("Server is shutting down")
+        logging.getLogger().error("Server is shutting down")
         self.dbConnection.close()
         logging.getLogger().info("Database Connection Closed")
 
@@ -205,7 +209,7 @@ def create_self_signed_cert():
 def main():
     
     parser = OptionParser()
-    parser.add_option('-l', '--loglevel', default='info', dest='logLevel', help='This sets the logging level you have these options: debug, info, warning, error, critical \t\tThe standard value is info')
+    parser.add_option('-l', '--loglevel', default='info', dest='logLevel', help='This sets the logging level to one of these options: debug, info, warning, error, critical \t\tThe standard value is info')
     parser.add_option('-p', '--port', default=4443, type='int', dest='port', help='This options lets you use a custom port instead of 443 (use a port > 1024 to run as non root user)')
     parser.add_option('--logfile', default=None, dest='logfile', help='Log to a file instead of stdout.')
     parser.add_option('-m', '--maxConnections', default=None, type='int', dest='maxConnections', help='You can limit the number of maximum simultaneous connections with that switch')

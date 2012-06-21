@@ -1,6 +1,14 @@
-# Run by the startup file net.siriserver.plist or .bash_profile with
-# function juizServer { cd $SIRIREPOSITORY/SiriServerCore/startup; ./juizServer.sh; }
+PORT="443"
+LOG="error"
+OUTPUT="$(find /home -name JuizServer -type d)/logs/$LOG-$(date +%s)"
 
-sudo systemsetup -setremotelogin on
-cd ../
-sudo python SiriServer.py -p 443 -l debug
+DAEMON_OPTS="SiriServer.py -p $PORT"
+
+if [ "$LOG" != "" ]; then
+    if [ "$OUTPUT" = "" ]; then
+        OUTPUT="$APP_PATH/logs/$(date +%s)-$LOG"
+    fi
+    DAEMON_OPTS="$DAEMON_OPTS -l $LOG --logfile $OUTPUT"
+fi
+
+sudo python $DAEMON_OPTS
