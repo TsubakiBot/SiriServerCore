@@ -1,6 +1,6 @@
 PORT="443"
 LOG="error"
-OUTPUT="$(find /home -name JuizServer -type d)/logs/$LOG-$(date +%s)"
+OUTPUT="$(find /home -name SiriDebug -type d)/$LOG-$(date +%s)"
 
 DAEMON_OPTS="SiriServer.py -p $PORT"
 
