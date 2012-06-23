@@ -12,8 +12,8 @@ from siriObjects.speechObjects import Phrase, Recognition, SpeechRecognized, \
 from siriObjects.systemObjects import StartRequest, SendCommands, CancelRequest, \
     CancelSucceeded, GetSessionCertificate, GetSessionCertificateResponse, \
     CreateSessionInfoRequest, CommandFailed, RollbackRequest, CreateAssistant, \
-    AssistantCreated, SetAssistantData, SetAlertContext, ClearContext, LoadAssistant,  \
-    AssistantNotFound, AssistantLoaded, DestroyAssistant, AssistantDestroyed
+    AssistantCreated, SetAssistantData, LoadAssistant, AssistantNotFound, \
+    AssistantLoaded, DestroyAssistant, AssistantDestroyed
 from siriObjects.uiObjects import UIAddViews, UIAssistantUtteranceView, UIButton
 import PluginManager
 import flac
@@ -28,8 +28,8 @@ import uuid
        
 
 class SiriProtocolHandler(Siri):
-    __not_recognized = {"de-DE": u"Entschuldigung, ich verstehe \"{0}\" nicht.", "en-US": u"Sorry, I don't understand {0}", "fr-FR": u"Désolé je ne comprends pas ce que \"{0}\" veut dire.", "nl-NL": u"Excuses, \"{0}\" versta ik niet."}
-    __websearch = {"de-DE": u"Websuche", "en-US": u"Websearch", "fr-FR": u"Rechercher sur le Web", "nl-NL": u"Zoeken op het web"}
+    __not_recognized = {"de-DE": u"Entschuldigung, ich verstehe \"{0}\" nicht.", "en-US": u"If you like, I can search the web for {0}.", "fr-FR": u"Désolé je ne comprends pas ce que \"{0}\" veut dire.", "nl-NL": u"Excuses, \"{0}\" versta ik niet."}
+    __websearch = {"de-DE": u"Websuche", "en-US": u"Search the web", "fr-FR": u"Rechercher sur le Web", "nl-NL": u"Zoeken op het web"}
     __scheduling_interval_timeout__ = 20
     __timeout_delay = 10
     
@@ -352,13 +352,6 @@ class SiriProtocolHandler(Siri):
                 cmdFailed.errorCode = 2
                 self.send_object(cmdFailed)
                 self.logger.warning("Trying to set assistant data without having a valid assistant")
-                
-        elif ObjectIsCommand(plist, SetAlertContext):
-                alertContext = SetAlertContext(plist)
-                self.assistant.alerts = alertContext.context
-                
-        elif ObjectIsCommand(plist, ClearContext):
-                self.assistant.alerts = None
                 
         elif ObjectIsCommand(plist, LoadAssistant):
             loadAssistant = LoadAssistant(plist)
