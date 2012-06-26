@@ -28,7 +28,7 @@ import uuid
        
 
 class SiriProtocolHandler(Siri):
-    __not_recognized = {"de-DE": u"Entschuldigung, ich verstehe \"{0}\" nicht.", "en-US": u"If you like, I can search the web for {0}.", "fr-FR": u"Désolé je ne comprends pas ce que \"{0}\" veut dire.", "nl-NL": u"Excuses, \"{0}\" versta ik niet."}
+    __not_recognized = {"de-DE": u"Entschuldigung, ich verstehe \"{0}\" nicht.", "en-US": u"If you like, I can search the web for {0}", "fr-FR": u"Désolé je ne comprends pas ce que \"{0}\" veut dire.", "nl-NL": u"Excuses, \"{0}\" versta ik niet."}
     __websearch = {"de-DE": u"Websuche", "en-US": u"Search the web", "fr-FR": u"Rechercher sur le Web", "nl-NL": u"Zoeken op het web"}
     __scheduling_interval_timeout__ = 20
     __timeout_delay = 10
@@ -336,6 +336,10 @@ class SiriProtocolHandler(Siri):
                         self.assistant.nickName = self.assistant.meCards[0].nickName.encode("utf-8")       
                     except:
                         self.assistant.nickName = u''
+                    try:
+                        self.assistant.accountIdentifier = self.assistant.abSources[0].accountIdentifier.encode("utf-8")
+                    except:
+                        self.assistant.accountIdentifier = u''
                     #Done recording
                     c.execute("update assistants set assistant = ? where assistantId = ?", (self.assistant, self.assistant.assistantId))
                     self.dbConnection.commit()
