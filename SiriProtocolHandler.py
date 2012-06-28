@@ -336,10 +336,10 @@ class SiriProtocolHandler(Siri):
                         self.assistant.nickName = self.assistant.meCards[0].nickName.encode("utf-8")       
                     except:
                         self.assistant.nickName = u''
-                    try:
-                        self.assistant.accountIdentifier = self.assistant.abSources[0].accountIdentifier.encode("utf-8")
-                    except:
-                        self.assistant.accountIdentifier = u''
+                    #try:
+                        #self.assistant.accountIdentifier = self.assistant.abSources[0].accountIdentifier.encode("utf-8")
+                    #except:
+                        #self.assistant.accountIdentifier = u''
                     #Done recording
                     c.execute("update assistants set assistant = ? where assistantId = ?", (self.assistant, self.assistant.assistantId))
                     self.dbConnection.commit()

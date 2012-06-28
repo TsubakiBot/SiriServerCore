@@ -32,7 +32,7 @@ class Assistant(SetAssistantData):
         self.assistantId = None
         self.nickName = u''
         self.firstName=u''
-
+        #self.accountIdentifier = None
 
 def adaptAssistant(assistant):
     return cPickle.dumps(assistant)
