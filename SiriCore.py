@@ -51,13 +51,13 @@ class Siri(LineReceiver):
             self.logger.error("{0} SSL related error".format(self.peer.host))
             self.logger.error(reason.value)
         elif reason.type == error.ConnectionLost:
-            self.logger.warning("{0} Connection Lost: {1}".format(self.peer.host, reason.value))
-            self.logger.error("{0} Connection Lost: {1}".format(self.peer.host, reason.value))
+            self.logger.warning("{0} Lost: {1}".format(self.peer.host, reason.value))
+            self.logger.error("{0} Lost: {1}".format(self.peer.host, reason.value))
         elif reason.type == error.ConnectionDone:
-            self.logger.info("{0} Connection Closed: {1}".format(self.peer.host, reason.value))
-            self.logger.warning("{0} Connection Closed: {1}".format(self.peer.host, reason.value))
+            self.logger.info("{0} Closed: {1}".format(self.peer.host, reason.value))
+            self.logger.warning("{0} Closed: {1}".format(self.peer.host, reason.value))
         else:
-            self.logger.error("{0} Connection Terminated: {1}".format(self.peer.host, reason))
+            self.logger.error("{0} Terminated: {1}".format(self.peer.host, reason))
         self.server.numberOfConnections -= 1
         self.logger.info("Currently {0} clients connected".format(self.server.numberOfConnections))
         self.server = None

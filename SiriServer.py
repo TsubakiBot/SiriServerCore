@@ -5,6 +5,7 @@ from optparse import OptionParser
 from os.path import exists
 from socket import gethostname
 from twisted.internet.protocol import Protocol
+import datetime
 import PluginManager
 import db
 import shutil
@@ -79,14 +80,20 @@ class SiriFactory(Factory):
         logging.getLogger().info("Loading Plugin Framework")
         PluginManager.load_api_keys()
         PluginManager.load_plugins()
-        logging.getLogger().info("Server is running and listening for connections")
-        logging.getLogger().warning("Server is running and listening for connections")
-        logging.getLogger().error("Server is running and listening for connections")
+        datenow = datetime.datetime.now()
+        timenow = datetime.time(12, 55, 0)
+        timestamp = datetime.datetime.combine(datenow, timenow)
+        logging.getLogger().info("{0}: Server is listening for connections".format(timestamp))
+        logging.getLogger().warning("{0}: Server is listening for connections".format(timestamp))
+        logging.getLogger().error("{0}: Server is listening for connections".format(timestamp))
         
     def stopFactory(self):
-        logging.getLogger().info("Server is shutting down")
-        logging.getLogger().warning("Server is shutting down")
-        logging.getLogger().error("Server is shutting down")
+        datenow = datetime.datetime.now()
+        timenow = datetime.time(12, 55, 0)
+        timestamp = datetime.datetime.combine(datenow, timenow)
+        logging.getLogger().info("{0}: Server is shutting down".format(timestamp))
+        logging.getLogger().warning("{0}: Server is shutting down".format(timestamp))
+        logging.getLogger().error("{0}: Server is shutting down".format(timestamp))
         self.dbConnection.close()
         logging.getLogger().info("Database Connection Closed")
 

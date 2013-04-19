@@ -31,8 +31,8 @@ class Assistant(SetAssistantData):
     def __init__(self):
         self.assistantId = None
         self.nickName = u''
-        self.firstName=u''
-        #self.accountIdentifier = None
+        self.firstName = u''
+        self.lastName = u''
 
 def adaptAssistant(assistant):
     return cPickle.dumps(assistant)
