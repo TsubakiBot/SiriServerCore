@@ -12,8 +12,8 @@ from siriObjects.speechObjects import Phrase, Recognition, SpeechRecognized, \
 from siriObjects.systemObjects import StartRequest, SendCommands, CancelRequest, \
     CancelSucceeded, GetSessionCertificate, GetSessionCertificateResponse, \
     CreateSessionInfoRequest, CommandFailed, RollbackRequest, CreateAssistant, \
-    AssistantCreated, SetAssistantData, LoadAssistant, AssistantNotFound, \
-    AssistantLoaded, DestroyAssistant, AssistantDestroyed
+    AssistantCreated, SetAssistantData, SetAlertContext, ClearContext, LoadAssistant,  \
+    AssistantNotFound, AssistantLoaded, DestroyAssistant, AssistantDestroyed
 from siriObjects.uiObjects import UIAddViews, UIAssistantUtteranceView, UIButton
 import PluginManager
 import flac
@@ -331,15 +331,16 @@ class SiriProtocolHandler(Siri):
                     try:                        
                         self.assistant.firstName = self.assistant.meCards[0].firstName.encode("utf-8")
                     except:
-                        self.assistant.firstName = u''                        
+                        self.assistant.firstName = u''
+                    try:                        
+                        self.assistant.lastName = self.assistant.meCards[0].lastName.encode("utf-8")
+                    except:
+                        self.assistant.lastName = u''      
                     try:                        
                         self.assistant.nickName = self.assistant.meCards[0].nickName.encode("utf-8")       
                     except:
                         self.assistant.nickName = u''
-                    #try:
-                        #self.assistant.accountIdentifier = self.assistant.abSources[0].accountIdentifier.encode("utf-8")
-                    #except:
-                        #self.assistant.accountIdentifier = u''
+                    self.assistant.abSources[0].accountIdentifier.encode("utf-8")
                     #Done recording
                     c.execute("update assistants set assistant = ? where assistantId = ?", (self.assistant, self.assistant.assistantId))
                     self.dbConnection.commit()
@@ -356,6 +357,13 @@ class SiriProtocolHandler(Siri):
                 cmdFailed.errorCode = 2
                 self.send_object(cmdFailed)
                 self.logger.warning("Trying to set assistant data without having a valid assistant")
+                
+        elif ObjectIsCommand(plist, SetAlertContext):
+                alertContext = SetAlertContext(plist)
+                self.assistant.alerts = alertContext.context
+                
+        elif ObjectIsCommand(plist, ClearContext):
+                self.assistant.alerts = None
                 
         elif ObjectIsCommand(plist, LoadAssistant):
             loadAssistant = LoadAssistant(plist)

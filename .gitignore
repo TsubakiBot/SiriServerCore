@@ -12,3 +12,5 @@ keys/
 logs/
 imdbpy/
 plugins/
+
+startup/utilities.sh

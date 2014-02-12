@@ -10,7 +10,7 @@
 	<true/>
 	<key>ProgramArguments</key>
 	<array>
-		<string>./juizServer.sh</string>
+		<string>./osxserver.sh</string>
 	</array>
 	<key>UserName</key>
 	<string>root</string>

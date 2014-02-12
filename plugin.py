@@ -296,6 +296,22 @@ class Plugin(threading.Thread):
             self.user_name=self.assistant.nickName.decode("utf-8")
         elif self.assistant.firstName!='':
             self.user_name=self.assistant.firstName.decode("utf-8")
+        elif self.assistant.lastName!='':
+            self.user_name=self.assistant.lastName.decode("utf-8")
         else:
             self.user_name=u''
         return self.user_name
+
+    def first_name(self):
+        if self.assistant.firstName!='':
+            self.first_name=self.assistant.firstName.decode("utf-8")
+        else:
+            self.first_name=u''
+        return self.first_name
+
+    def last_name(self):
+        if self.assistant.lastName!='':
+            self.last_name=self.assistant.lastName.decode("utf-8")
+        else:
+            self.last_name=u''
+        return self.last_name
