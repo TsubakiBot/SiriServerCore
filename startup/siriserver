@@ -19,9 +19,9 @@ DESC=SiriServer
 # you may change RUN_AS parameter to your username if you select ports over 1024 #
 PORT=443
 RUN_AS=root
-APP_PATH=$(find /media -name SiriServerCore -type d)
+APP_PATH=$(find /media/psf/LOUNGEKATT -name SiriServerCore -type d)
 LOG=error
-OUTPUT=$(find /media -name SiriDebugger -type d)/$LOG-$(date +%s)
+OUTPUT=$(find /media/psf/LOUNGEKATT -name SiriDebugger -type d)/$LOG-$(date +%s)
 ####### END | NO MORE EDITING #####
 
 . /lib/lsb/init-functions
@@ -109,16 +109,20 @@ stop_siriServer () {
 case "$1" in
     start)
         start_siriServer
-        sudo /etc/init.d/apache2 start
+#        sudo /etc/init.d/apache2 start
+	sudo apachectl start
         ;;
     stop)
         stop_siriServer
-        sudo /etc/init.d/apache2 stop
+#        sudo /etc/init.d/apache2 stop
+	sudo apachectl stop
         ;;
     restart)
         stop_siriServer
         start_siriServer
-        sudo /etc/init.d/apache2 restart
+#        sudo /etc/init.d/apache2 restart
+	sudo apachectl stop
+	sudo apachectl start
         ;;
     deploy)
         sh $APP_PATH/startup/utilities.sh
